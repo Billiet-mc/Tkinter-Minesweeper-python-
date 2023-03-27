@@ -158,18 +158,21 @@ def getSurroundingButtons(centerButton):
 #if you clicked a blank button it reveals all neighboring buttons 
 #if you clicked anything else it just reveals that one button
 def buttonClicked(centerButton):
-    surroundingButtons = getSurroundingButtons(centerButton)
-    if centerButton.mineNumber == 0:
-        centerButton.config(relief='groove')
-        for i in surroundingButtons:
-            if i.mineNumber > 0 and not i.isRevealed and not i.isMine:
-                i.revealButton()
-            elif i.mineNumber == 0 and not i.isRevealed:
-                i.revealButton()
-                buttonClicked(i)
+    if not GAME_OVER:
+        surroundingButtons = getSurroundingButtons(centerButton)
+        if centerButton.mineNumber == 0:
+            centerButton.config(relief='groove')
+            for i in surroundingButtons:
+                if i.mineNumber > 0 and not i.isRevealed and not i.isMine:
+                    i.revealButton()
+                elif i.mineNumber == 0 and not i.isRevealed:
+                    i.revealButton()
+                    buttonClicked(i)
 
-    elif centerButton.mineNumber > 0:
-        centerButton.revealButton()
+        elif centerButton.mineNumber > 0:
+            centerButton.revealButton()
+    if GAME_OVER and centerButton.isMine:
+        centerButton.config(relief = 'raised')
 
 
 def updateLabels():
